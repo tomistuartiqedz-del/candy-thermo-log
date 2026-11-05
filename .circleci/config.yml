@@ -1,0 +1,2113 @@
+version: 2.1
+
+jobs:
+  normalizeFailed:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create fixture B
+          command: |
+            mkdir -p /tmp/run.d
+            set +o pipefail 2>/dev/null; awk 'BEGIN{for(i=1;i<=100000;i++) printf "%d %04d\n", i, i*i%10000}' > /tmp/run.d/5f918771358f4b25ff50271; true
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/5f918771358f4b25ff50271)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - '5f918771358f4b25ff50271'
+  strated:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/5f918771358f4b25ff50271 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  T:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Let Omar purge the output bucket
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; echo 'let'\''s go!' | od -An -tx1; true ; } > /tmp/run.d/Wave
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/Wave)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'Wave'
+  validte-28:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/Wave 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  k4:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Return SKUs by noon
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; grep -I -i -h -r export /etc/security 2> /dev/null |cut -d: -f1 |sort -u; true ; } > /tmp/run.d/patch.1.18
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/patch.1.18)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'patch.1.18'
+  Run_Service7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/patch.1.18 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  Grant-PatternItem:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Site Bravo Only Refresh
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; find /usr/sbin -maxdepth 3 -type f -size +1M -print0 | xargs -0r du -ch | tail -1; true ; } > /tmp/run.d/coastal.atom
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/coastal.atom)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'coastal.atom'
+  publish:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/coastal.atom 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  DEEP_BUCKET_SETTINGS:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: We power cycle the GPIO pins first
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; ps -eo pid,ppid,comm --sort=pid | head --lines=3; true ; } > /tmp/run.d/v_91536
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/v_91536)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'v_91536'
+  refactor-3853:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/v_91536 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  lang-eu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Bucketing so nothing is lost
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; echo secret >'/tmp/cost.dat' && shred -u '/tmp/cost.dat' && ls '/tmp/cost.dat' 2>/dev/null || echo shredded; true ; } > /tmp/run.d/53.141
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/53.141)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - '53.141'
+  produce-end-to-end-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/53.141 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  qwertyuiqwertyui:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Bank feed already invoiced
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; grep -R umask /usr/share/doc/bash | wc -l; true ; } > /tmp/run.d/bundleomegaridge
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/bundleomegaridge)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'bundleomegaridge'
+  vb-alt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/bundleomegaridge 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  aquax:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Light The Enemy Waves Low Res
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; getent group | tail -n 1 | awk -F ":" '{print $1, $3}' | wc -l; true ; } > /tmp/run.d/Market
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/Market)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'Market'
+  bake-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/Market 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  InternalRayRenderer:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Report Of The Type Checks
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; ls -nrlF ~ /usr/sbin | tr -s ' ' | cut -d' ' -f5-; true ; } > /tmp/run.d/GIF.Shimmer
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/GIF.Shimmer)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'GIF.Shimmer'
+  defualt-17:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/GIF.Shimmer 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  Joystick:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Ensure that the master file is cropped
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; grep -c -r case /etc 2>/dev/null | nl | head -n 8; true ; } > /tmp/run.d/flameHost
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/flameHost)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'flameHost'
+  produce-production-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/flameHost 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  yara_sunset:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Tomorrow version the product tour
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; touch "/tmp/tmp_icon_grid.csv" && mv -v "/tmp/tmp_icon_grid.csv" "/tmp/vision1.copy"; true ; } > /tmp/run.d/ServerCoastalHarbor
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/ServerCoastalHarbor)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'ServerCoastalHarbor'
+  tango-9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/ServerCoastalHarbor 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  gClanLevel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Lock and load swipe
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; find /opt -maxdepth 2 -type l -name '*' -exec echo '{}' \; 2> /dev/null | awk -F/ '{print $NF}'; true ; } > /tmp/run.d/PhotonShardOrchard
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/PhotonShardOrchard)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'PhotonShardOrchard'
+  d-alt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/PhotonShardOrchard 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  libmotor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create fixture B
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; printf 'host=localhost\nport=6930\nuser=vic\ndebug=true\n' >/tmp/refund.tsv && grep -c = /tmp/refund.tsv; true ; } > /tmp/run.d/us3r
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/us3r)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'us3r'
+  DEV_CHECK_3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/us3r 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  TotalGlobalFastCheckout:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Static Route Resolution
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; printf %s "what's next?" | b2sum | awk '{print $1}'; true ; } > /tmp/run.d/tone_copper
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/tone_copper)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'tone_copper'
+  build-partial-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/tone_copper 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  shouldRestartUser:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: RET
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; ls -gvX /dev/std* /usr/sbin | sort -k5,5nr | head -5; true ; } > /tmp/run.d/SKU69718
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/SKU69718)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'SKU69718'
+  tweak-dashboard:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/SKU69718 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  SSLv5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Ok to flag the revenue split
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; echo 'check passed' | fold -w 24 | tac; true ; } > /tmp/run.d/packet-signal-bison-otter
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/packet-signal-bison-otter)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'packet-signal-bison-otter'
+  Validate_Suite8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/packet-signal-bison-otter 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  drop-unless:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Sandboxing the secrets please wait
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; printf '%s\n' key=value | cat -A; true ; } > /tmp/run.d/IMG-84357
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/IMG-84357)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'IMG-84357'
+  PackageSuite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/IMG-84357 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  entryPs:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Step Nine Onboard Visa Paperwork
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; touch "/tmp/thread-card.list" &&mv "/tmp/thread-card.list" /tmp/old-spider.copy &&ls -l /tmp/old-spider.copy; true ; } > /tmp/run.d/ci-fx-db
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/ci-fx-db)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'ci-fx-db'
+  Rollout_Release5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/ci-fx-db 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  clipsecondarypeek:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Catalogue the lease table in a tick
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; getent passwd | sed 's/:.*//' | fmt -w 56; true ; } > /tmp/run.d/20.04.2024
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/20.04.2024)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - '20.04.2024'
+  charlie-9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/20.04.2024 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  panWorkerRequest:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Scan during the deadline
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; host=finalgame.jpg && echo ${host:3}; true ; } > /tmp/run.d/61f1111f6
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/61f1111f6)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - '61f1111f6'
+  Launch_App4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/61f1111f6 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  MAX_SOCKET_SIZE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: mounting humidity probe
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; tar -czf /tmp/island-milestone.tgz -C /etc profile && mkdir -p "/tmp/inventory-trace-info" && tar -xzf /tmp/island-milestone.tgz -C "/tmp/inventory-trace-info" && ls -R "/tmp/inventory-trace-info"; true ; } > /tmp/run.d/DeltALoaDErRouteR
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/DeltALoaDErRouteR)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'DeltALoaDErRouteR'
+  gating:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/DeltALoaDErRouteR 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  NavFast:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Do we need to rebuild the web tier
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 2 -name '*tab' -size +1k -uid 0 -exec echo {} ";" 2>/dev/null|head -n 5; true ; } > /tmp/run.d/m07h.flux.dr1f7.fram3.p3er
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/m07h.flux.dr1f7.fram3.p3er)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'm07h.flux.dr1f7.fram3.p3er'
+  validate-nightly-integration-tests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/m07h.flux.dr1f7.fram3.p3er 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  warningMu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Fall back to approving the password hashes
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; getent passwd | head -12 | cut -d ":" -f 6; true ; } > /tmp/run.d/debug-7dc966.log
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/debug-7dc966.log)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'debug-7dc966.log'
+  RUN_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/debug-7dc966.log 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  lst_sec:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Quantize the GPU pool ahead of posterity
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; type -a sed; true ; } > /tmp/run.d/uKdiMmXO71Ivy11
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/uKdiMmXO71Ivy11)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'uKdiMmXO71Ivy11'
+  cd-old:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/uKdiMmXO71Ivy11 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  freddy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create fixture B
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; id | rev | tail -n 5 | rev | cut -c1-26; true ; } > /tmp/run.d/meadow.config
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/meadow.config)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'meadow.config'
+  phoenix-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/meadow.config 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  tango-oscar-8:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: chmod ga
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; printf %s "the quick brown fox" | md5sum | awk '{print $1}'; true ; } > /tmp/run.d/GOPR-00082437
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/GOPR-00082437)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'GOPR-00082437'
+  uma-smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/GOPR-00082437 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  TZ_PUBLIC:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Mission Winter Viper
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; awk '{print NR": "$0}' /proc/cpuinfo; true ; } > /tmp/run.d/os-ridge
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/os-ridge)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'os-ridge'
+  nova-final:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/os-ridge 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  VIEW_HUGE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Retag without downtime
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; touch -d 'tomorrow' /var/tmp/forum.marker && ls -l --time-style=long-iso /var/tmp/forum.marker; true ; } > /tmp/run.d/bear523
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/bear523)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'bear523'
+  fiona-push:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/bear523 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  G:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Test tube staining for round two
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; mkdir -p "/tmp/scoreapp_2019_02_19" && cd "/tmp/scoreapp_2019_02_19" && pwd; true ; } > /tmp/run.d/F
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/F)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'F'
+  rm-router-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/F 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+  FromBody:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Zero hour playtest
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; echo $PATH|tr : '\n'|grep -v '^[a-m]'|head -n 3|tac; true ; } > /tmp/run.d/chunkmoltenbramble
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/chunkmoltenbramble)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'chunkmoltenbramble'
+  assemble-nightly-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Open blob
+          command: |
+            awk '/./{n++}END{print "nonempty:",n+0}' /tmp/run.d/chunkmoltenbramble 2>/dev/null || true
+      - run:
+          name: Prepare source
+          command: git clone -q --single-branch --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: tar xzf package.tgz
+      - run:
+          name: Settle filesystem
+          command: sleep 15
+      - run:
+          name: Hash artifacts
+          command: sleep 30
+      - run:
+          no_output_timeout: 93m
+          command: (./tester)
+
+  field-2014-w44:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: And now sandbox the password hashes
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; cp -r /etc/skel "/tmp/plot-summer" && ls -A "/tmp/plot-summer"; true ; } > /tmp/run.d/SKU69718
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/SKU69718)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'SKU69718'
+  p13:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Sync RTC
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; compgen -k | shuf -n 5; true ; } > /tmp/run.d/patch.1.18
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/patch.1.18)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'patch.1.18'
+  testCPU:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Now loading the tote bins
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; awk '{print $2}' /etc/hosts | nl -w2 -s". " | fold -w 36; true ; } > /tmp/run.d/Wave
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/Wave)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'Wave'
+  pSize:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: and so on
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; dd if=/dev/zero of="/tmp/peach.tmp" bs=4k count=11 status=none && ls -l "/tmp/peach.tmp"; true ; } > /tmp/run.d/DeltALoaDErRouteR
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/DeltALoaDErRouteR)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'DeltALoaDErRouteR'
+  pEnabledTab:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create fixture B
+          command: |
+            mkdir -p /tmp/run.d
+            set +o pipefail 2>/dev/null; awk 'BEGIN{for(i=1;i<=100000;i++) printf "%d %04d\n", i, i*i%10000}' > /tmp/run.d/5f918771358f4b25ff50271; true
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/5f918771358f4b25ff50271)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - '5f918771358f4b25ff50271'
+  measure_window_run_catch:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: No cleanup today
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; grep -rwI export /etc 2>/dev/null | head -n5; true ; } > /tmp/run.d/ci-fx-db
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/ci-fx-db)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'ci-fx-db'
+  ed-78-cc-76-ba-f7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: sensor array inspection fresh
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; locale -a|shuf -n 5; true ; } > /tmp/run.d/bundleomegaridge
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/bundleomegaridge)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'bundleomegaridge'
+  UNUSED_INI:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Spin up the cron jobs in 500 chunks
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; { printf "%s\n" oslo toronto prague; } >'/tmp/signalcontract.tmp' && sort '/tmp/signalcontract.tmp'; true ; } > /tmp/run.d/IMG-84357
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/IMG-84357)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'IMG-84357'
+  IOSignalDidDumpNotification:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Start of shift rotate the sudoers file
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; if [[ -b /dev/null ]] ; then echo yes; elif [[ -e /tmp ]] ; then echo maybe; else echo no; fi; true ; } > /tmp/run.d/20.04.2024
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/20.04.2024)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - '20.04.2024'
+  s_nWaveText:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Dedupe or tidy shared drive
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; echo brown orange white purple yellow magenta cyan|tr ' ' '\n'|paste -s -d ' '; true ; } > /tmp/run.d/ServerCoastalHarbor
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/ServerCoastalHarbor)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'ServerCoastalHarbor'
+  PUBLIC_DIR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Empty state collapsed
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; find ~ -maxdepth 2 -mindepth 1 -type d -path \* -mmin -60 -executable -exec du -sh "{}" ';'; true ; } > /tmp/run.d/m07h.flux.dr1f7.fram3.p3er
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/m07h.flux.dr1f7.fram3.p3er)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'm07h.flux.dr1f7.fram3.p3er'
+  realHank:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: spin culture plates maybe
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; find /var/tmp -not -name '*' -exec ls -ld {} ';' 2> /dev/null|nl; true ; } > /tmp/run.d/chunkmoltenbramble
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/chunkmoltenbramble)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'chunkmoltenbramble'
+  blvd_img:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Finished quarantining the kernel
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; echo x >'/tmp/keys.tmp' && ln -f '/tmp/keys.tmp' /tmp/laundry.bak && stat -c %h '/tmp/keys.tmp'; true ; } > /tmp/run.d/bear523
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/bear523)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'bear523'
+  UNUSED_EXE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Point 05 junit output sanity check b
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; for i in ana ann tina vic iris; do echo ${i^^}; done|head -3; true ; } > /tmp/run.d/debug-7dc966.log
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/debug-7dc966.log)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'debug-7dc966.log'
+  l:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: CD 8843
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; grep -rIi color /etc/security 2>/dev/null|tail -n8; true ; } > /tmp/run.d/flameHost
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/flameHost)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'flameHost'
+  bParser:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Seal before the audit
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; ls /sys/class/net | sed 's/^/- /' | tr -s ' '; true ; } > /tmp/run.d/F
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/F)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'F'
+  Shade_82343:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: We try to encrypt the kernel
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; sed 's|.*/||' /etc/shells | awk '{print length, $0}' | sort -u; true ; } > /tmp/run.d/packet-signal-bison-otter
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/packet-signal-bison-otter)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'packet-signal-bison-otter'
+  TTTTT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create fixture B
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; grep -rIH alias /etc/skel |nl |head -n 8; true ; } > /tmp/run.d/meadow.config
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/meadow.config)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'meadow.config'
+  SortedEdgeComponent:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: tbh poll the heartbeat
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; echo 'yay!' 1>/tmp/pear.out 2>/tmp/photo.conf && cat /tmp/pear.out; true ; } > /tmp/run.d/GOPR-00082437
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/GOPR-00082437)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'GOPR-00082437'
+  SSHRuntime:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Centrifuge agar until boot
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; for num in pete max raj juan erin;do echo "${num^}"; done | head --lines=3; true ; } > /tmp/run.d/GIF.Shimmer
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/GIF.Shimmer)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'GIF.Shimmer'
+  cibGkLcd:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Unmute the backlog
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; touch '/tmp/nig7.log' && cp '/tmp/nig7.log'{,.bak} && ls '/tmp/nig7.log'*; true ; } > /tmp/run.d/53.141
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/53.141)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - '53.141'
+  a255869b-b8ae-089d-d1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Reboot the edge router ready for speed
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; case top in [aeiou]*) echo vowel;;*) echo consonant;;esac; true ; } > /tmp/run.d/os-ridge
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/os-ridge)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'os-ridge'
+  label-peek:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Tier V linking glossary
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; awk -F: 'NR <= 5{print $1}' /etc/passwd | nl; true ; } > /tmp/run.d/61f1111f6
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/61f1111f6)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - '61f1111f6'
+  fgh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Pack the leaderboard gold master
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; first='greetings from linux' && printf '%s\n' "${first%% *}"; true ; } > /tmp/run.d/PhotonShardOrchard
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/PhotonShardOrchard)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'PhotonShardOrchard'
+  c:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Train the prompt set on 4 gpus
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; ps aux|tail -n +2|sort -k3 -r -n; true ; } > /tmp/run.d/v_91536
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/v_91536)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'v_91536'
+  exitHeightBlock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Proof the training loop
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,papaya,13,13.92\n2,grape,13,35.02\n3,banana,9,73.95\n4,cherry,16,21.77\n' >"/tmp/pantry.csv" && tail -n +2 "/tmp/pantry.csv" | cut -d, -f3 | paste -sd+; true ; } > /tmp/run.d/tone_copper
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/tone_copper)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'tone_copper'
+  mia-score:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: archive table snapshot task
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; ls -v -T 4 /usr/bin | shuf -n 2; true ; } > /tmp/run.d/Market
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/Market)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'Market'
+  has-index:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Midnight bounce
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; ok='the end' && printf '%s\n' "${ok// /_}"; true ; } > /tmp/run.d/coastal.atom
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/coastal.atom)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'coastal.atom'
+  freeze_password:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run.d
+      - run:
+          name: Issue OTP
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; grep --line-number --with-filename --recursive case /etc/skel | nl | head -n 8; true ; } > /tmp/run.d/uKdiMmXO71Ivy11
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/uKdiMmXO71Ivy11)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'uKdiMmXO71Ivy11'
+  DelegatingRefDriver:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Create fixture B
+          command: |
+            mkdir -p /tmp/run.d
+            { set +o pipefail 2>/dev/null; ls /proc | grep -v '^[0-9]' | rev | nl | tr -d '[:digit:]'; true ; } > /tmp/run.d/us3r
+            # metric
+            echo "metric.stage_bytes=$(wc -c </tmp/run.d/us3r)"
+      - persist_to_workspace:
+          root: /tmp/run.d
+          paths:
+            - 'us3r'
+workflows:
+  ci:
+    jobs:
+      - shouldRestartUser
+      - field-2014-w44:
+          requires:
+            - shouldRestartUser
+      - tweak-dashboard:
+          requires:
+            - field-2014-w44
+      - k4:
+          requires:
+            - field-2014-w44
+      - p13:
+          requires:
+            - k4
+      - Run_Service7:
+          requires:
+            - p13
+      - T:
+          requires:
+            - p13
+      - testCPU:
+          requires:
+            - T
+      - validte-28:
+          requires:
+            - testCPU
+      - MAX_SOCKET_SIZE:
+          requires:
+            - testCPU
+      - pSize:
+          requires:
+            - MAX_SOCKET_SIZE
+      - gating:
+          requires:
+            - pSize
+      - normalizeFailed:
+          requires:
+            - pSize
+      - pEnabledTab:
+          requires:
+            - normalizeFailed
+      - strated:
+          requires:
+            - pEnabledTab
+      - entryPs:
+          requires:
+            - pEnabledTab
+      - measure_window_run_catch:
+          requires:
+            - entryPs
+      - Rollout_Release5:
+          requires:
+            - measure_window_run_catch
+      - qwertyuiqwertyui:
+          requires:
+            - measure_window_run_catch
+      - ed-78-cc-76-ba-f7:
+          requires:
+            - qwertyuiqwertyui
+      - vb-alt:
+          requires:
+            - ed-78-cc-76-ba-f7
+      - drop-unless:
+          requires:
+            - ed-78-cc-76-ba-f7
+      - UNUSED_INI:
+          requires:
+            - drop-unless
+      - PackageSuite:
+          requires:
+            - UNUSED_INI
+      - clipsecondarypeek:
+          requires:
+            - UNUSED_INI
+      - IOSignalDidDumpNotification:
+          requires:
+            - clipsecondarypeek
+      - charlie-9:
+          requires:
+            - IOSignalDidDumpNotification
+      - yara_sunset:
+          requires:
+            - IOSignalDidDumpNotification
+      - s_nWaveText:
+          requires:
+            - yara_sunset
+      - tango-9:
+          requires:
+            - s_nWaveText
+      - NavFast:
+          requires:
+            - s_nWaveText
+      - PUBLIC_DIR:
+          requires:
+            - NavFast
+      - validate-nightly-integration-tests:
+          requires:
+            - PUBLIC_DIR
+      - FromBody:
+          requires:
+            - PUBLIC_DIR
+      - realHank:
+          requires:
+            - FromBody
+      - assemble-nightly-docker-image:
+          requires:
+            - realHank
+      - VIEW_HUGE:
+          requires:
+            - realHank
+      - blvd_img:
+          requires:
+            - VIEW_HUGE
+      - fiona-push:
+          requires:
+            - blvd_img
+      - warningMu:
+          requires:
+            - blvd_img
+      - UNUSED_EXE:
+          requires:
+            - warningMu
+      - RUN_QA:
+          requires:
+            - UNUSED_EXE
+      - Joystick
+      - l:
+          requires:
+            - Joystick
+      - produce-production-integration-tests:
+          requires:
+            - l
+      - G:
+          requires:
+            - l
+      - bParser:
+          requires:
+            - G
+      - rm-router-v2:
+          requires:
+            - bParser
+      - SSLv5:
+          requires:
+            - bParser
+      - Shade_82343:
+          requires:
+            - SSLv5
+      - Validate_Suite8:
+          requires:
+            - Shade_82343
+      - freddy:
+          requires:
+            - Shade_82343
+      - TTTTT:
+          requires:
+            - freddy
+      - phoenix-alpha:
+          requires:
+            - TTTTT
+      - tango-oscar-8:
+          requires:
+            - TTTTT
+      - SortedEdgeComponent:
+          requires:
+            - tango-oscar-8
+      - uma-smoke:
+          requires:
+            - SortedEdgeComponent
+      - InternalRayRenderer:
+          requires:
+            - SortedEdgeComponent
+      - SSHRuntime:
+          requires:
+            - InternalRayRenderer
+      - defualt-17:
+          requires:
+            - SSHRuntime
+      - lang-eu:
+          requires:
+            - SSHRuntime
+      - cibGkLcd:
+          requires:
+            - lang-eu
+      - produce-end-to-end-regression-suite:
+          requires:
+            - cibGkLcd
+      - TZ_PUBLIC:
+          requires:
+            - cibGkLcd
+      - a255869b-b8ae-089d-d1:
+          requires:
+            - TZ_PUBLIC
+      - nova-final:
+          requires:
+            - a255869b-b8ae-089d-d1
+      - panWorkerRequest:
+          requires:
+            - a255869b-b8ae-089d-d1
+      - label-peek:
+          requires:
+            - panWorkerRequest
+      - Launch_App4:
+          requires:
+            - label-peek
+      - gClanLevel:
+          requires:
+            - label-peek
+      - fgh:
+          requires:
+            - gClanLevel
+      - d-alt:
+          requires:
+            - fgh
+      - DEEP_BUCKET_SETTINGS:
+          requires:
+            - fgh
+      - c:
+          requires:
+            - DEEP_BUCKET_SETTINGS
+      - refactor-3853:
+          requires:
+            - c
+      - TotalGlobalFastCheckout:
+          requires:
+            - c
+      - exitHeightBlock:
+          requires:
+            - TotalGlobalFastCheckout
+      - build-partial-regression-suite:
+          requires:
+            - exitHeightBlock
+      - aquax:
+          requires:
+            - exitHeightBlock
+      - mia-score:
+          requires:
+            - aquax
+      - bake-it:
+          requires:
+            - mia-score
+      - Grant-PatternItem:
+          requires:
+            - mia-score
+      - has-index:
+          requires:
+            - Grant-PatternItem
+      - publish:
+          requires:
+            - has-index
+      - lst_sec:
+          requires:
+            - has-index
+      - freeze_password:
+          requires:
+            - lst_sec
+      - cd-old:
+          requires:
+            - freeze_password
+      - libmotor:
+          requires:
+            - freeze_password
+      - DelegatingRefDriver:
+          requires:
+            - libmotor
+      - DEV_CHECK_3:
+          requires:
+            - DelegatingRefDriver
